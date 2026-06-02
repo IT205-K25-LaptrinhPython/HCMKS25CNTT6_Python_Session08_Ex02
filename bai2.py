@@ -1,185 +1,166 @@
-# Phân tích Input/Output
-# Dữ liệu đầu vào
-# Tất cả các dữ liệu đầu vào đều là Kiểu chuỗi (String).
-# Menu hệ thống: Lựa chọn chức năng (choice): Các ký tự từ "1" đến "5".
-# Chức năng 1 (Nhập thông tin):
-# Tên shop (shop_name)
-# Tên sản phẩm (product_name)
-# Mô tả sản phẩm (description)
-# Danh mục sản phẩm (category)
-# Danh sách từ khóa tìm kiếm (keywords - nhập cách nhau bằng dấu phẩy)
-# Chức năng 3 (Kiểm tra mã giảm giá): * Mã giảm giá (discount_code)
-# Chức năng 4 (Tìm và thay thế): * Từ khóa cần tìm (find_word)
-# Từ khóa thay thế (replace_word)
-# Dữ liệu đầu ra (Output)
-# Chức năng 1:
-# Các thông tin được chuẩn hóa khoảng trắng (Tên shop, Tên sản phẩm, Mô tả, Danh mục).
-# Tên sản phẩm viết hoa chữ cái đầu.
-# Các thông số phân tích: Độ dài mô tả, số lượng từ khóa.
-# Chuỗi mô tả ở định dạng in HOA và in thường toàn bộ.
-# Chức năng 2: Tên shop ban đầu và tên đã được chuẩn hóa (Thêm shop- ở đầu và thay khoảng trắng bằng gạch ngang).
-# Chức năng 3:
-# Thông báo lỗi cụ thể nếu mã giảm giá không hợp lệ (rỗng, chứa khoảng trắng, sai độ dài, không in hoa, chứa ký tự đặc biệt, không bắt đầu bằng SALE).
-# Thông báo thành công và chuỗi danh sách mã giảm giá nếu hợp lệ.
-# Chức năng 4: Số lượng từ khóa tìm thấy và thực hiện thay thế ngầm trong biến mô tả.
-# Thông báo "Không tìm thấy" nếu từ khóa không tồn tại.
-# Chức năng 5: Dòng thông báo thoát và ngắt chương trình.
+# PHÂN TÍCH VÀ THIẾT KẾ GIẢI PHÁP
 
-# Đề xuất giải pháp
-# Để giải quyết bài toán, chương trình sử dụng cấu trúc lặp kết hợp rẽ nhánh và các phương thức xử lý chuỗi (String methods) cốt lõi của Python.
-# Cấu trúc điều khiển chính
-# Vòng lặp while True: Tạo một vòng lặp vô hạn để hiển thị menu liên tục.
-# Câu lệnh match-case: Dùng để điều hướng luồng thực thi tương ứng với các lựa chọn từ 1 đến 5 
-# (có thêm case _ để bẫy lỗi nhập sai lựa chọn).
-# Các phương thức xử lý chuỗi và kiểm tra dữ liệu (Không dùng mảng)
-# Làm sạch và định dạng văn bản: * .strip(): Cắt bỏ khoảng trắng ở đầu và cuối chuỗi.
-# .title(): Viết hoa chữ cái đầu của mỗi từ.
-# .upper() / .lower(): Chuyển đổi toàn bộ chuỗi sang in hoa / in thường.
-# .replace(" ", "-"): Thay thế khoảng trắng bằng dấu gạch ngang (dùng kết hợp vòng lặp để xóa khoảng trắng thừa).
-# Nối chuỗi: Dùng phép cộng (+) để gom các mã giảm giá vào một chuỗi duy nhất.
-# Kiểm tra tính hợp lệ (Validation):
-# Kiểm tra rỗng: Dùng len(string) == 0.
-# Kiểm tra tiền tố: Dùng .startswith("SALE") hoặc .startswith("shop-").
-# Kiểm tra định dạng: Dùng .isupper() (viết hoa) và .isalnum() (chỉ chứa chữ và số).
-# Kiểm tra chứa ký tự: Dùng toán tử in.
-# Tìm kiếm và thay thế: .replace(old, new) và .count(word).
+# Input:
+# - Lựa chọn menu (1-5)
+# - Tên shop
+# - Tên sản phẩm
+# - Mô tả sản phẩm
+# - Danh mục sản phẩm
+# - Danh sách từ khóa
+# - Mã giảm giá
+# - Từ khóa cần tìm và thay thế
 
-# Thiết kế thuật toán (Pseudocode)
-# BẮT ĐẦU CHƯƠNG TRÌNH
-# LẶP VÔ HẠN (while True):
-#     IN ra màn hình Khung giao diện Menu (1 đến 5)
-#     NHẬP lựa chọn chức năng vào biến 'choice'    
-#     CHỌN 'choice':
-#         TRƯỜNG HỢP "1":
-#             NHẬP shop_name, product_name, description, category, keywords
-#             NẾU shop_name rỗng HOẶC description rỗng:
-#                 IN thông báo lỗi và TIẾP TỤC (continue) vòng lặp            
-#             LÀM SẠCH và ĐỊNH DẠNG:
-#                 IN shop_name, product_name, description, category (đã xử lý khoảng trắng và format)
-#             TÍNH TOÁN:
-#                 IN độ dài chuỗi description
-#                 TÍNH số lượng từ khóa bằng cách đếm dấu phẩy (.count(",") + 1)
-#                 IN description in hoa và in thường           
-#         TRƯỜNG HỢP "2":
-#             IN shop_name ban đầu
-#             CHUYỂN shop_name thành chữ thường
-#             LẶP XÓA khoảng trắng thừa (replace "  " thành " ")
-#             THAY THẾ khoảng trắng bằng "-"
-#             NẾU chưa có "shop-": THÊM "shop-"
-#             IN shop_name đã chuẩn hóa       
-#         TRƯỜNG HỢP "3":
-#             NHẬP discount_code
-#             NẾU discount_code rỗng: IN lỗi rỗng
-#             NGƯỢC LẠI NẾU có chứa khoảng trắng: IN lỗi khoảng trắng
-#             NGƯỢC LẠI NẾU độ dài không từ 6 đến 12: IN lỗi độ dài
-#             NGƯỢC LẠI NẾU không viết hoa toàn bộ: IN lỗi viết hoa
-#             NGƯỢC LẠI NẾU không chỉ chứa chữ và số: IN lỗi định dạng
-#             NGƯỢC LẠI NẾU không bắt đầu bằng "SALE": IN lỗi tiền tố
-#             NGƯỢC LẠI:
-#                 IN "Mã giảm giá hợp lệ"
-#                 NỐI discount_code vào chuỗi str_discount_codes
-#                 IN chuỗi mã giảm giá          
-#         TRƯỜNG HỢP "4":
-#             NHẬP find_word và replace_word
-#             ĐẾM số lần xuất hiện của find_word trong description (count_word)
-#             NẾU count_word > 0:
-#                 THAY THẾ find_word bằng replace_word trong description
-#                 IN count_word
-#             NGƯỢC LẠI:
-#                 IN "Không tìm thấy"           
-#         TRƯỜNG HỢP "5":
-#             IN "Thoát chương trình"
-#             THOÁT LẶP (break)         
-#         TRƯỜNG HỢP MẶC ĐỊNH (Khác 1-5):
-#             IN "Lựa chọn không hợp lệ"
-# KẾT THÚC CHƯƠNG TRÌNH
+# Output:
+# - Thông tin sản phẩm đã được chuẩn hóa
+# - Tên shop chuẩn hóa
+# - Kết quả kiểm tra mã giảm giá
+# - Kết quả tìm kiếm và thay thế từ khóa
+# - Thông báo lỗi khi dữ liệu không hợp lệ
 
+# Giải pháp:
+# - Sử dụng vòng lặp while True để tạo menu.
+# - Sử dụng match-case để xử lý các chức năng.
+# - Dùng strip() để xóa khoảng trắng thừa.
+# - Dùng title() để chuẩn hóa tên sản phẩm.
+# - Dùng lower() và upper() để chuyển đổi chữ hoa/thường.
+# - Dùng split() để tách danh sách từ khóa.
+# - Dùng replace() để thay thế từ khóa.
+# - Dùng len() để tính độ dài chuỗi và số lượng từ khóa.
+# - Kiểm tra dữ liệu hợp lệ trước khi xử lý.
+
+# Thuật toán:
+# B1. Hiển thị menu.
+# B2. Người dùng chọn chức năng.
+# B3. Kiểm tra lựa chọn hợp lệ.
+# B4. Thực hiện chức năng tương ứng:
+#     - Nhập và thống kê sản phẩm.
+#     - Chuẩn hóa tên shop.
+#     - Kiểm tra mã giảm giá.
+#     - Tìm kiếm và thay thế từ khóa.
+# B5. Quay lại menu.
+# B6. Nếu chọn 5 thì kết thúc chương trình.
+
+shop_name = ""
+product_name = ""
+description = ""
+category = ""
+keywords = []
 
 while True:
-    print(f"+{"="*68}+")
-    print("|            HỆ THỐNG QUẢN LÝ NỘI DUNG SẢN PHẨM SHOPEE               |")
-    print(f"+{"="*68}+")
-    print("|   1. Nhập dữ liệu sản phẩm và xem báo cáo thống kê                 |")
-    print("|   2. Chuẩn hóa tên shop                                            |")
-    print("|   3. Kiểm tra mã giảm giá hợp lệ                                   |")
-    print("|   4. Tìm kiếm và thay thế từ khóa trong mô tả sản phẩm             |")
-    print("|   5. Thoát chương trình                                            |")
-    print(f"+{"="*68}+")
-    
-    choice = input("> Mời bạn chọn chức năng (1-5): ")
-    
+    print("\n===== HỆ THỐNG QUẢN LÝ SẢN PHẨM =====")
+    print("1. Nhập dữ liệu sản phẩm và xem báo cáo thống kê")
+    print("2. Chuẩn hóa tên Shop")
+    print("3. Kiểm tra mã giảm giá hợp lệ")
+    print("4. Tìm kiếm và thay thế từ khóa trong mô tả sản phẩm")
+    print("5. Thoát chương trình")
+
+    choice = input("Chọn chức năng: ")
+
     match choice:
+
         case "1":
             shop_name = input("Nhập tên shop: ")
-            if (len(shop_name.strip()) == 0):
+
+            if shop_name.strip() == "":
                 print("Tên shop không được bỏ trống")
-                continue            
-            product_name = input("Nhập tên sản phẩm: ")            
+                continue
+
+            product_name = input("Nhập tên sản phẩm: ")
             description = input("Nhập mô tả sản phẩm: ")
-            if (len(description.strip()) == 0):
+
+            if description.strip() == "":
                 print("Mô tả sản phẩm không được rỗng")
-                continue           
+                continue
+
             category = input("Nhập danh mục sản phẩm: ")
-            keywords = input("Nhập danh sách từ khóa tìm kiếm (cách nhau bởi dấu phẩy): ")
-            print()            
-            print(f"Tên shop: {shop_name.strip()}")
-            print(f"Tên sản phẩm: {product_name.strip().title()}")
-            print(f"Mô tả sản phẩm: {description.strip()}")
-            print(f"Độ dài mô tả sản phẩm: {len(description.strip())}")
-            print(f"Danh mục sản phẩm: {category.strip().lower()}")            
-            keywords_clean = keywords.replace(" ", "")
-            print(f"Danh sách từ khóa sau khi chuẩn hóa: {keywords_clean}")
-            if len(keywords_clean) > 0:
-                count_keywords = keywords_clean.count(",") + 1
-            else:
-                count_keywords = 0
-            print(f"Số lượng từ khóa tìm kiếm: {count_keywords}")
-            print(f"Mô tả sản phẩm được chuyển toàn bộ sang chữ thường: {description.lower()}")
-            print(f"Mô tả sản phẩm được chuyển toàn bộ sang chữ hoa: {description.upper()}")
-            print()           
+            keyword_input = input("Nhập danh sách từ khóa (cách nhau bởi dấu phẩy): ")
+
+            clean_shop = shop_name.strip()
+            clean_product = product_name.strip().title()
+            clean_description = description.strip()
+            clean_category = category.strip().lower()
+
+            keywords = []
+            for keyword in keyword_input.split(","):
+                keywords.append(keyword.strip())
+
+            print("\n===== BÁO CÁO THỐNG KÊ =====")
+            print("Tên shop:", clean_shop)
+            print("Tên sản phẩm:", clean_product)
+            print("Mô tả sản phẩm:", clean_description)
+            print("Độ dài mô tả:", len(clean_description))
+            print("Danh mục:", clean_category)
+            print("Danh sách từ khóa:", keywords)
+            print("Số lượng từ khóa:", len(keywords))
+            print("Mô tả chữ thường:", clean_description.lower())
+            print("Mô tả chữ hoa:", clean_description.upper())
+
         case "2":
-            print(f"Tên shop ban đầu: {shop_name}")
-            normalized_shop = shop_name.lower().strip()
-            normalized_shop = normalized_shop.replace(" ", "-")
+            original_shop = input("Nhập tên shop: ")
+
+            if original_shop.strip() == "":
+                print("Tên shop không được bỏ trống")
+                continue
+
+            normalized_shop = original_shop.strip().lower()
+            normalized_shop = "-".join(normalized_shop.split())
+
             if not normalized_shop.startswith("shop-"):
                 normalized_shop = "shop-" + normalized_shop
-            print(f"Tên shop sau khi được chuẩn hóa: {normalized_shop}")
-            print()
+
+            print("Tên shop ban đầu:", original_shop)
+            print("Tên shop chuẩn hóa:", normalized_shop)
+
         case "3":
-            discount_code = input("Nhập vào mã giảm giá: ")
-            if (len(discount_code) == 0):
+            discount_code = input("Nhập mã giảm giá: ")
+
+            if discount_code == "":
                 print("Mã giảm giá không được rỗng")
-            elif (" " in discount_code):
+
+            elif " " in discount_code:
                 print("Mã giảm giá không được chứa khoảng trắng")
-            elif (len(discount_code) < 6 or len(discount_code) > 12):
+
+            elif len(discount_code) < 6 or len(discount_code) > 12:
                 print("Mã giảm giá phải có độ dài từ 6 đến 12 ký tự")
-            elif (not discount_code.isupper()):
+
+            elif discount_code != discount_code.upper():
                 print("Mã giảm giá phải được viết hoa toàn bộ")
-            elif (not discount_code.isalnum()):
+
+            elif not discount_code.isalnum():
                 print("Mã giảm giá chỉ được chứa chữ cái và chữ số")
-            elif (not discount_code.startswith("SALE")):
-                print("Mã giảm giá phải bắt đầu bằng chuỗi SALE")
+
+            elif not discount_code.startswith("SALE"):
+                print("Mã giảm giá phải bắt đầu bằng SALE")
+
             else:
-                print("Mã giảm giá hợp lệ!")
-                if len(str_discount_codes) == 0:
-                    str_discount_codes = discount_code
-                else:
-                    str_discount_codes = str_discount_codes + ", " + discount_code           
-                print(f"Danh sách mã giảm giá hiện tại: {str_discount_codes}")
-            print()   
+                print("Mã giảm giá hợp lệ")
+
         case "4":
-            find_word = input("Nhập từ khóa cần tìm: ")
-            replace_word = input("Nhập từ khóa thay thế: ")            
-            count_word = description.count(find_word)            
-            if (count_word > 0):
-                print(f"Số lần xuất hiện của từ khóa: {count_word}")
-                description = description.replace(find_word, replace_word)
-                print(f"Mô tả sau khi thay thế:\n{description}")
+            if description.strip() == "":
+                print("Chưa có mô tả sản phẩm")
+                continue
+
+            find_keyword = input("Nhập từ khóa cần tìm: ")
+            replace_keyword = input("Nhập từ khóa thay thế: ")
+
+            keyword_count = description.count(find_keyword)
+
+            if keyword_count > 0:
+                new_description = description.replace(
+                    find_keyword,
+                    replace_keyword
+                )
+
+                print("Số lần xuất hiện của từ khóa:", keyword_count)
+                print("Mô tả sau khi thay thế:")
+                print(new_description)
+
             else:
-                print("Không tìm thấy")
-            print()           
+                print("Không tìm thấy từ khóa")
+
         case "5":
-            print("Thoát chương trình\n")
-            break           
+            print("Thoát chương trình")
+            break
+
         case _:
-            print("Lựa chọn không hợp lệ\n")
+            print("Lựa chọn không hợp lệ")
